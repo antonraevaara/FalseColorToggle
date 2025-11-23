@@ -61,7 +61,8 @@ def _unregister_keymap():
     try:
         for km, kmi in addon_keymaps:
             km.keymap_items.remove(kmi)
-    except:
+    except (RuntimeError, KeyError, AttributeError):
+        # Keymap item may have been removed already or keymap doesn't exist
         pass
     addon_keymaps.clear()
 
@@ -70,26 +71,35 @@ def _register_keymap():
     """Register keymap based on current preferences."""
     _unregister_keymap()
 
-    wm = bpy.context.window_manager
+    # Check if context is available (may not be during initial registration)
+    try:
+        wm = bpy.context.window_manager
+    except AttributeError:
+        return
+    
     kc = wm.keyconfigs.addon if wm else None
     if not kc:
         return
 
     try:
         prefs = bpy.context.preferences.addons[__name__].preferences
-    except Exception:
+    except (KeyError, AttributeError):
         return
 
-    km = kc.keymaps.new(name="3D View", space_type="VIEW_3D")
-    kmi = km.keymap_items.new(
-        VIEW3D_OT_toggle_false_color.bl_idname,
-        type=prefs.shortcut_key,
-        value="PRESS",
-        ctrl=prefs.shortcut_ctrl,
-        shift=prefs.shortcut_shift,
-        alt=prefs.shortcut_alt,
-    )
-    addon_keymaps.append((km, kmi))
+    try:
+        km = kc.keymaps.new(name="3D View", space_type="VIEW_3D")
+        kmi = km.keymap_items.new(
+            VIEW3D_OT_toggle_false_color.bl_idname,
+            type=prefs.shortcut_key,
+            value="PRESS",
+            ctrl=prefs.shortcut_ctrl,
+            shift=prefs.shortcut_shift,
+            alt=prefs.shortcut_alt,
+        )
+        addon_keymaps.append((km, kmi))
+    except (RuntimeError, KeyError, AttributeError) as e:
+        # Keymap registration failed, log but don't crash
+        print(f"Warning: Could not register keymap: {e}")
 
 
 def _update_shortcut(self, context):
@@ -188,7 +198,16 @@ def register():
         print("False Color Toggle addon registered successfully")
     except Exception as e:
         print(f"Error registering False Color Toggle addon: {e}")
-        return
+        # Try to clean up partially registered classes
+        try:
+            bpy.utils.unregister_class(VIEW3D_OT_toggle_false_color)
+        except (RuntimeError, KeyError):
+            pass
+        try:
+            bpy.utils.unregister_class(FalseColorTogglePreferences)
+        except (RuntimeError, KeyError):
+            pass
+        raise
 
 
 def unregister():
