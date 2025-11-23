@@ -2,6 +2,23 @@
 
 Toggle between a chosen View Transform and **False Color** with a single shortcut in the 3D Viewport.
 
+1.	Download the ZIP:
+https://github.com/antonraevaara/FalseColorToggle/raw/refs/heads/main/FalseColorToggle.zip￼
+
+2.	In Blender:
+Edit → Preferences → Add-ons → Install…
+Select the ZIP and enable False Color Toggle.
+
+
+This is version 1.1, so the feature set is still limited.
+Shortcut options are restricted to F-keys (F1–F12) combined with Ctrl / Shift / Alt.
+Let me know if you need more options in the next version.
+
+
+---------------------------
+
+
+
 ### Features
 
 - **Toggle**: Base View Transform ↔ False Color
@@ -13,15 +30,6 @@ Toggle between a chosen View Transform and **False Color** with a single shortcu
 
 - Blender **4.5** or newer
 - Color management configuration that provides the **False Color** view (default in Blender 4.5+)
-
-### Installation
-
-1. Make sure you have a ZIP that contains:
-   - `FalseColorToggle/__init__.py`
-2. In Blender:
-   - `Edit → Preferences → Add-ons → Install…`
-   - Select `FalseColorToggle.zip`
-   - Enable **False Color Toggle** in the add-on list.
 
 ### Configuration
 
