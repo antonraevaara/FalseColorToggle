@@ -134,7 +134,6 @@ class FalseColorTogglePreferences(AddonPreferences):
             ('F10', "F10", ""),
             ('F11', "F11", ""),
             ('F12', "F12", ""),
-            ('V', "V", "V key"),
         ],
         default='F8',
         update=_update_shortcut,

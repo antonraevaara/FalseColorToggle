@@ -29,7 +29,7 @@ Toggle between a chosen View Transform and **False Color** with a single shortcu
 2. **Base View Transform**:
    - Choose which view transform (e.g. `AgX`, `Filmic`, `Standard`) you want to pair with False Color.
 3. **Toggle Shortcut**:
-   - Choose modifiers (**Ctrl / Shift / Alt**) and a **Key** (F1–F12 or V).
+   - Choose modifiers (**Ctrl / Shift / Alt**) and a **Key** (F1–F12).
    - Changes are applied immediately to the `3D View` keymap.
 
 ### Usage
